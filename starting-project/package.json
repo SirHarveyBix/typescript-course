@@ -1,5 +1,5 @@
 {
-  "name": "understanding-ts",
+  "name": "typescript-first-course",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "lite-server"
   },
-  "author": "Maximilian Schwarzmüller",
+  "author": "",
   "license": "ISC",
   "devDependencies": {
     "typescript": "^4.6.2",
