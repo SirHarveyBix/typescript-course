@@ -1,23 +1,19 @@
-enum Role {
-  ADMIN, // 0
-  READ_ONLY, // 1
-  AUTHOR, // 2
-}
+let userInput: unknown;
+let userName: string;
 
-interface Person {
-  name: string;
-  age: number;
-  hobbies: string[];
-  role: Role;
-  // role: [number, string]; // => type = tuple
-}
+userInput = 5;
+userInput = "Gui";
 
-const person: Person = {
-  name: "Guillaume",
-  hobbies: ["velo", "manger"],
-  age: 33,
-  role: Role.ADMIN,
-  // role: [2, "dev"],
+if (typeof userInput === "string") userName = userInput;
+
+const generateError = (message: string, code: number): never => {
+  // it'll NEVER return anything
+  throw { message: message, errorCode: code };
+  // throw will crash the script
 };
 
-console.log(person.role);
+const result = generateError("Error, Error, Bro !", 500);
+
+console.log(result);
+
+// typescript doc : https://www.typescriptlang.org/docs/handbook/2/everyday-types.html
