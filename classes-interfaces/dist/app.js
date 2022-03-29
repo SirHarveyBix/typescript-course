@@ -8,9 +8,6 @@ class Department {
     static createEmployee(name) {
         return { name: name };
     }
-    describe() {
-        console.log(`Department (${this.id}): ${this.name}`);
-    }
     addEmployee(employee) {
         this.employees.push(employee);
     }
@@ -25,6 +22,9 @@ class ITDepartment extends Department {
         super(id, "IT");
         this.admins = admins;
         this.admins = admins;
+    }
+    describe() {
+        console.log("IT Department - ID: ", this.id);
     }
 }
 class AccountingDepartment extends Department {
@@ -44,6 +44,15 @@ class AccountingDepartment extends Department {
             throw new Error("Please pass in Valid Value !");
         }
         this.addReport(value);
+    }
+    static getInstance() {
+        if (AccountingDepartment.instance)
+            return this.instance;
+        this.instance = new AccountingDepartment("d2", []);
+        return this.instance;
+    }
+    describe() {
+        console.log("Accounting dpt : " + this.id);
     }
     addReport(text) {
         this.reports.push(text);
@@ -66,12 +75,11 @@ it.addEmployee("Gui");
 it.describe();
 it.printEmployeeInformations();
 console.log("it", it);
-const accounting = new AccountingDepartment("d1", []);
+const accounting = AccountingDepartment.getInstance();
 accounting.mostRecentReport = "Year end report";
 accounting.addReport("Something went wrong .. ");
 console.log(accounting.mostRecentReport);
 accounting.addEmployee("Gui");
 accounting.addEmployee("Kevin");
-accounting.printEmployeeInformations();
-accounting.printReports();
+accounting.describe();
 //# sourceMappingURL=app.js.map
