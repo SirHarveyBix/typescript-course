@@ -98,3 +98,87 @@ class Product {
     return this._price * (1 + tax);
   }
 }
+
+const AutoBind = (
+  _target: any,
+  _methodName: string | symbol,
+  descriptor: PropertyDescriptor
+) => {
+  const originalMethod = descriptor.value;
+
+  const adjDesciptor: PropertyDescriptor = {
+    configurable: true,
+    enumerable: false,
+    get() {
+      const boundFunction = originalMethod.bind(this);
+      return boundFunction;
+    },
+  };
+  return adjDesciptor;
+};
+
+class Printer {
+  message = 'This Work !';
+
+  @AutoBind
+  showMessage() {
+    console.log(this.message);
+  }
+}
+
+const p = new Printer();
+
+const button = document.querySelector('button')!;
+
+button.addEventListener('click', p.showMessage);
+
+// ---
+
+const config: { [input: string]: string[] } = {};
+
+const addValidator = (input: string, type: string) => {
+  config[input] = config[input] ? [...config[input], type] : [type];
+};
+
+const Required = (_: any, input: string) => addValidator(input, 'required');
+const Maxlength = (_: any, input: string) => addValidator(input, 'maxlength');
+const Positive = (_: any, input: string) => addValidator(input, 'positive');
+
+const validate = (anyObject: any) => {
+  return Object.entries(config).every(([input, types]) => {
+    return types.every(
+      (type) =>
+        (type === 'required' && anyObject[input]) ||
+        (type === 'maxlength' && anyObject[input] > 0) ||
+        (type === 'positive' && anyObject[input].lenght < 5)
+    );
+  });
+};
+class Course {
+  @Required title: string;
+
+  @Positive price: number;
+
+  constructor(t: string, p: number) {
+    this.title = t;
+    this.price = p;
+  }
+}
+
+const courseForm = document.querySelector('form')!;
+
+courseForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const titleElement = document.getElementById('title') as HTMLInputElement;
+  const priceElement = document.getElementById('price') as HTMLInputElement;
+
+  const title = titleElement.value;
+  const price = Number(priceElement.value);
+
+  const createdCourse = new Course(title, price);
+  if (!validate(createdCourse)) {
+    throw new Error('invalid input');
+    return;
+  }
+  console.log(createdCourse);
+});
