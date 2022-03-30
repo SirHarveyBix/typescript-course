@@ -1,35 +1,39 @@
-class Department {
-  // public is default
-  // private name: string;
-  private employees: string[] = [];
+interface AddFunction {
+  (a: number, b: number): number;
+}
+// type AddFunction = (a: number, b: number) => number;
 
-  constructor(private readonly id: string, public name: string) {
-    // this.name = name;
+let add: AddFunction;
+
+add = (n1: number, n2: number) => {
+  return n1 + n2;
+};
+
+interface Named {
+  readonly name?: string;
+  outputName?: string;
+}
+
+interface Greetable extends Named {
+  greet(phrase: string): void;
+}
+
+class Person implements Greetable {
+  name?: string;
+  age = 30;
+  constructor(n?: string) {
+    if (n) this.name = n;
   }
 
-  describe(this: Department) {
-    console.log(`Department (${this.id}): ${this.name}`);
-  }
-
-  addEmployee(employee: string) {
-    this.employees.push(employee);
-  }
-
-  printEmployeeInformations() {
-    console.log("length: ", this.employees.length);
-    console.log(this.employees);
+  greet(phrase: string) {
+    console.log(phrase, " ", this.name);
   }
 }
 
-const accounting = new Department("D1", "Accounting");
-accounting.addEmployee("Max");
-accounting.addEmployee("Gui");
+let user1: Greetable;
 
-// accounting.employees[2] = "Marie"; // private => needs to use class method: 'addEmployee("Marie")'
+user1 = new Person("Gui");
 
-accounting.describe();
-accounting.printEmployeeInformations();
+user1.greet("Hello World, i am :");
 
-// const accountingCopy = { name: "Dummy Class", describe: accounting.describe };
-
-// accountingCopy.describe();
+console.log(user1);

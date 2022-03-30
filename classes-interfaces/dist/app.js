@@ -1,24 +1,20 @@
 "use strict";
-class Department {
-    constructor(id, name) {
-        this.id = id;
-        this.name = name;
-        this.employees = [];
+let add;
+add = (n1, n2) => {
+    return n1 + n2;
+};
+class Person {
+    constructor(n) {
+        this.age = 30;
+        if (n)
+            this.name = n;
     }
-    describe() {
-        console.log(`Department (${this.id}): ${this.name}`);
-    }
-    addEmployee(employee) {
-        this.employees.push(employee);
-    }
-    printEmployeeInformations() {
-        console.log("length: ", this.employees.length);
-        console.log(this.employees);
+    greet(phrase) {
+        console.log(phrase, " ", this.name);
     }
 }
-const accounting = new Department("D1", "Accounting");
-accounting.addEmployee("Max");
-accounting.addEmployee("Gui");
-accounting.describe();
-accounting.printEmployeeInformations();
+let user1;
+user1 = new Person("Gui");
+user1.greet("Hello World, i am :");
+console.log(user1);
 //# sourceMappingURL=app.js.map
