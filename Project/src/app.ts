@@ -155,6 +155,30 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
   abstract configure?(): void;
   abstract renderContent(): void;
 }
+//Project Item Class
+class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> {
+  private project: Project;
+
+  get persons() {
+    if (this.project.people === 1) return '1 person';
+    else return `${this.project.people} persons`;
+  }
+
+  constructor(hostId: string, project: Project) {
+    super('single-project', hostId, false, project.id);
+    this.project = project;
+
+    this.configure();
+    this.renderContent();
+  }
+
+  configure() {}
+  renderContent() {
+    this.element.querySelector('h2')!.textContent = this.project.title;
+    this.element.querySelector('h3')!.textContent = this.persons + ' assigned';
+    this.element.querySelector('p')!.textContent = this.project.description;
+  }
+}
 
 // ProjectList Class
 class ProjectList extends Component<HTMLDivElement, HTMLElement> {
@@ -186,7 +210,7 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
     const listId = `${this.type}-projects-list`;
     this.element.querySelector('ul')!.id = listId;
     this.element.querySelector('h2')!.textContent =
-      this.type.toLocaleUpperCase() + 'PROJECTS';
+      this.type.toLocaleUpperCase() + ' PROJECTS';
   }
 
   private renderProjects() {
@@ -195,9 +219,7 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
     );
     listElement.innerHTML = '';
     for (const projectItem of this.assignedProjects) {
-      const listItem = document.createElement('li');
-      listItem.textContent = projectItem.title;
-      listElement.appendChild(listItem);
+      new ProjectItem(this.element.querySelector('ul')!.id, projectItem);
     }
   }
 }
