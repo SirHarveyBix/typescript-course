@@ -1,4 +1,3 @@
-// Drag & Drop interface
 namespace App {
   export interface Draggable {
     dragStartHandler(event: DragEvent): void;
