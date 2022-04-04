@@ -2,10 +2,9 @@ import axios, { AxiosResponse } from 'axios';
 
 const googleApiKey = process.env.GOOGLE_API_KEY;
 
-// const googleScript = <HTMLScriptElement>(
-//   document.getElementById('googlemap-area')!
-// );
-// googleScript.src = `https://maps.googleapis.com/maps/api/js?key=${googleApiKey}`;
+const script = document.createElement('script');
+script.src = `https://maps.googleapis.com/maps/api/js?key=${googleApiKey}`;
+document.head.append(script);
 
 interface Coordinate {
   lat: number;
