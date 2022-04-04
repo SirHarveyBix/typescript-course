@@ -1,5 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
 
+const googleApiKey = process.env.GOOGLE_API_KEY;
+
+// const googleScript = <HTMLScriptElement>(
+//   document.getElementById('googlemap-area')!
+// );
+// googleScript.src = `https://maps.googleapis.com/maps/api/js?key=${googleApiKey}`;
+
 interface Coordinate {
   lat: number;
   lng: number;
@@ -12,8 +19,6 @@ type GoogleGeocodeResponse = {
 
 const form = document.querySelector('form')!;
 const addressInput = <HTMLInputElement>document.getElementById('address');
-
-const googleApiKey = process.env.GOOGLE_API_KEY;
 
 const searchAdressHandler = (event: Event) => {
   event.preventDefault();
@@ -28,11 +33,17 @@ const searchAdressHandler = (event: Event) => {
       if (response.data.status !== 'OK') {
         throw Error('Could not fetch any Location.');
       }
-      const coordinate: Coordinate = response.data.results[0].geometry.location;
-      console.log(coordinate);
+
+      const coordinates = response.data.results[0].geometry.location;
+      const map = new google.maps.Map(document.getElementById('map')!, {
+        center: coordinates,
+        zoom: 11,
+      });
+
+      new google.maps.Marker({ position: coordinates, map: map });
     })
     .catch((error) => {
-      console.error(error.message);
+      console.error(error);
     });
 };
 
