@@ -5,19 +5,21 @@ import ToDoList from './components/ToDoList';
 import { Todo } from './todo.model';
 
 const App: React.FC = () => {
-  const dummyTodos = [
-    { id: 't1', text: 'finishing the course' },
-    { id: 't2', text: 'learing typescript' },
-  ];
   const [todos, setTodos] = useState<Todo[]>([]);
 
   const todoAddHandler = (text: string): void => {
-    setTodos([{ id: Math.random().toString(), text: text }]);
+    setTodos((todos) => [...todos, { id: Math.random().toString(), text: text }]);
+  };
+
+  const todoDeleteHandler = (TodoId: string): void => {
+    setTodos((prevTodos) => {
+      return prevTodos.filter((todo) => todo.id !== TodoId);
+    });
   };
   return (
     <div className="App">
       <NewToDo onAddTodo={todoAddHandler} />
-      <ToDoList items={dummyTodos} />
+      <ToDoList items={todos} onDeleteTodo={todoDeleteHandler} />
     </div>
   );
 };
